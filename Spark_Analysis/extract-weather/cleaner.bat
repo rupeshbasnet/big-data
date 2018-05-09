@@ -1,1 +1,0 @@
-sed -i '1,2d' ../dataset/weather-data/12-2016.csv
