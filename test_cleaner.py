@@ -23,8 +23,12 @@ def parserTaxi(id, data):
 if __name__ == '__main__':
 	sc = pyspark.SparkContext()
 	sqlContext = SQLContext(sc)
-	taxi = sc.textFile('hdfs:///user/rbasnet000/Data/yellow_tripdata_2016-12.csv', use_unicode=False).cache() 
-	taxiRDD = taxi.mapPartitionsWithIndex(parserTaxi)
-	df = sqlContext.createDataFrame(taxiRDD, ['tpep_pickup_datetime', 'tpep_dropoff_datetime', 'pickup_longitude', 'pickup_latitude', 'dropoff_longitude', 'dropoff_latitude', 'Date', 'Weekday'])
-	df = df.select('Date').groupBy('Date').count()
-	df.coalesce(1).write.csv('hdfs:///user/rbasnet000/CleanData/yellow_tripdata_2016-12_AGG', header=True)
+	for i in range(1, 12):
+		if i < 10:
+			taxi = sc.textFile('hdfs:///user/rbasnet000/Data/yellow_tripdata_2016-0{0}.csv'.format(i), use_unicode=False).cache()
+		else:
+			taxi = sc.textFile('hdfs:///user/rbasnet000/Data/yellow_tripdata_2016-{0}.csv'.format(i), use_unicode=False).cache()
+		taxiRDD = taxi.mapPartitionsWithIndex(parserTaxi)
+		df = sqlContext.createDataFrame(taxiRDD, ['tpep_pickup_datetime', 'tpep_dropoff_datetime', 'pickup_longitude', 'pickup_latitude', 'dropoff_longitude', 'dropoff_latitude', 'Date', 'Weekday'])
+		df = df.select('Date').groupBy('Date').count()
+		df.coalesce(1).write.csv('hdfs:///user/rbasnet000/CleanData/yellow_tripdata_2016-{0}_AGG'.format(i), header=True)
