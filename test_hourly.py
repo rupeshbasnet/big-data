@@ -14,7 +14,7 @@ def parserTaxi(id, data):
         tpep_pickup_datetime, tpep_dropoff_datetime, pickup_longitude, \
         pickup_latitude, dropoff_longitude, dropoff_latitude, Date, Weekday, HourofDay = i[1], i[2], i[5], i[6], i[9], i[10], \
         datetime.datetime.strptime(i[1], "%Y-%m-%d %H:%M:%S").date(), \
-        calendar.day_name[datetime.datetime.strptime(i[1], "%Y-%m-%d %H:%M:%S").weekday()] \
+        calendar.day_name[datetime.datetime.strptime(i[1], "%Y-%m-%d %H:%M:%S").weekday()], \
         datetime.datetime.strptime(i[1], "%Y-%m-%d %H:%M:%S").hour
        
         # rows required for the taxi data
