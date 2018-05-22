@@ -32,4 +32,4 @@ if __name__ == '__main__':
 		taxiRDD = taxi.mapPartitionsWithIndex(parserTaxi)
 		df = sqlContext.createDataFrame(taxiRDD, ['tpep_pickup_datetime', 'tpep_dropoff_datetime', 'pickup_longitude', 'pickup_latitude', 'dropoff_longitude', 'dropoff_latitude', 'Date', 'Weekday', 'HourofDay'])
 		df = df.select(['Date', 'HourofDay']).groupBy(['Date', 'HourofDay']).count()
-		df.coalesce(1).write.csv('hdfs:///user/rbasnet000/CleanData/Hourly/yellow_tripdata_2016-{0}_AGG_Hourly'.format(i), header=True)
+		df.coalesce(1).write.csv('hdfs:///user/rbasnet000/CleanData/NewHourly/yellow_tripdata_2016-{0}_AGG_Hourly'.format(i), header=True)
