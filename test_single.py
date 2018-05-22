@@ -24,7 +24,7 @@ def parserTaxi(id, data):
 if __name__ == '__main__':
     sc = pyspark.SparkContext()
     sqlContext = SQLContext(sc)
-    taxi = sc.textFile('hdfs:///user/rbasnet000/Data/yellow_tripdata_2016-1.csv', use_unicode=False).cache()
+    taxi = sc.textFile('hdfs:///user/rbasnet000/Data/yellow_tripdata_2016-01.csv', use_unicode=False).cache()
     taxiRDD = taxi.mapPartitionsWithIndex(parserTaxi)
     df = sqlContext.createDataFrame(taxiRDD, ['tpep_pickup_datetime', 'tpep_dropoff_datetime', 'pickup_longitude', 'pickup_latitude', 'dropoff_longitude', 'dropoff_latitude', 'Date', 'Weekday', 'HourofDay'])
     df = df.select(['Date', 'HourofDay']).groupBy(['Date', 'HourofDay']).count()
